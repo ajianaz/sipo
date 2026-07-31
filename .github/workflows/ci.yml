@@ -3,10 +3,10 @@ name: ci
 on:
   push:
     branches: [develop]
-    paths: ['app/**']
+    paths: ['app/**', '.github/workflows/ci.yml']
   pull_request:
     branches: [develop]
-    paths: ['app/**']
+    paths: ['app/**', '.github/workflows/ci.yml']
 
 jobs:
   lint:
@@ -36,22 +36,69 @@ jobs:
           name: coverage
           path: app/coverage/
 
-  build:
+  build-preview:
     runs-on: ubuntu-latest
     needs: test
+    if: github.event_name == 'push'
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+
       - run: cd app && flutter pub get
+
       - run: cd app && dart run build_runner build --delete-conflicting-outputs
-      - run: cd app && flutter build apk --release
-      - name: Rename APK with short SHA
+
+      - name: Bump build number
         run: |
+          cd app
+          CURRENT_VERSION=$(grep 'version:' pubspec.yaml | head -1 | sed 's/version: //')
+          CURRENT_MAJOR=$(echo "$CURRENT_VERSION" | cut -d. -f1)
+          CURRENT_MINOR=$(echo "$CURRENT_VERSION" | cut -d. -f2)
+          CURRENT_PATCH=$(echo "$CURRENT_VERSION" | cut -d. -f3 | cut -d+ -f1)
+          CURRENT_BUILD=$(echo "$CURRENT_VERSION" | cut -d+ -f2)
+
+          # Count commits on develop since last tag
+          if git describe --tags --match 'v*' --abbrev=0 2>/dev/null; then
+            BUILD=$(git rev-list $(git describe --tags --match 'v*' --abbrev=0)..HEAD --count)
+            BUILD=$((BUILD + CURRENT_BUILD))
+          else
+            BUILD=${{ github.run_number }}
+          fi
+
+          NEW_VERSION="${CURRENT_MAJOR}.${CURRENT_MINOR}.${CURRENT_PATCH}+${BUILD}"
+
+          echo "Current: $CURRENT_VERSION"
+          echo "New: $NEW_VERSION"
+
+          sed -i "s/^version: .*/version: ${NEW_VERSION}/" pubspec.yaml
+          echo "VERSION=${NEW_VERSION}" >> "$GITHUB_ENV"
+
+      - name: Build APK
+        run: cd app && flutter build apk --release
+
+      - name: Rename APK
+        run: |
+          VERSION_NO_BUILD=$(echo "$VERSION" | cut -d+ -f1)
           mv app/build/app/outputs/flutter-apk/app-release.apk \
-            app/build/app/outputs/flutter-apk/sipo-dev-${GITHUB_SHA::7}.apk
-      - uses: actions/upload-artifact@v4
+            app/build/app/outputs/flutter-apk/sipo-dev-${VERSION}.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: release-apk
-          path: app/build/app/outputs/flutter-apk/sipo-dev-${GITHUB_SHA::7}.apk
+          name: sipo-dev-preview
+          path: app/build/app/outputs/flutter-apk/sipo-dev-${{ env.VERSION }}.apk
+          retention-days: 30
+
+      - name: Comment version info
+        run: |
+          echo "## 📱 Dev Preview Build" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Version:** \`${{ env.VERSION }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Commit:** \`${{ github.sha }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Download APK dari **Actions → Artifacts → sipo-dev-preview**" >> "$GITHUB_STEP_SUMMARY"

@@ -26,7 +26,12 @@ jobs:
 
       - name: Extract version from tag
         id: version
-        run: echo "VERSION=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+        run: |
+          TAG=${GITHUB_REF_NAME#v}
+          VERSION=${TAG%%+*}
+          BUILD=${TAG#*+}
+          echo "VERSION=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "BUILD=${BUILD}" >> "$GITHUB_OUTPUT"
 
       - name: Rename APK
         run: |
@@ -36,12 +41,12 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: Sipo ${{ steps.version.outputs.VERSION }}
+          name: Sipo v${{ steps.version.outputs.VERSION }}
           body: |
-            ## Sipo ${{ steps.version.outputs.VERSION }}
+            ## Sipo v${{ steps.version.outputs.VERSION }}
 
             ### Cara install
-            1. Download `sipo-${{ steps.version.outputs.VERSION }}.apk` di bawah
+            1. Download `sipo-v${{ steps.version.outputs.VERSION }}.apk` di bawah
             2. Buka file APK di HP Android
             3. Izinkan install dari unknown sources
             4. Install
