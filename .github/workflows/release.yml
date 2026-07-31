@@ -1,0 +1,51 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - run: cd app && flutter pub get
+
+      - run: cd app && dart run build_runner build --delete-conflicting-outputs
+
+      - name: Build APK
+        run: cd app && flutter build apk --release
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Rename APK
+        run: |
+          mv app/build/app/outputs/flutter-apk/app-release.apk \
+            app/build/app/outputs/flutter-apk/sipo-${{ steps.version.outputs.VERSION }}.apk
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Sipo ${{ steps.version.outputs.VERSION }}
+          body: |
+            ## Sipo ${{ steps.version.outputs.VERSION }}
+
+            ### Cara install
+            1. Download `sipo-${{ steps.version.outputs.VERSION }}.apk` di bawah
+            2. Buka file APK di HP Android
+            3. Izinkan install dari unknown sources
+            4. Install
+
+            > Requires Android 6.0+ (API 23)
+          files: app/build/app/outputs/flutter-apk/sipo-${{ steps.version.outputs.VERSION }}.apk
+          generate_release_notes: true

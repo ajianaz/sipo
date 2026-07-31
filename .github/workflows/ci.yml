@@ -47,7 +47,11 @@ jobs:
       - run: cd app && flutter pub get
       - run: cd app && dart run build_runner build --delete-conflicting-outputs
       - run: cd app && flutter build apk --release
+      - name: Rename APK with short SHA
+        run: |
+          mv app/build/app/outputs/flutter-apk/app-release.apk \
+            app/build/app/outputs/flutter-apk/sipo-dev-${GITHUB_SHA::7}.apk
       - uses: actions/upload-artifact@v4
         with:
           name: release-apk
-          path: app/build/app/outputs/flutter-apk/app-release.apk
+          path: app/build/app/outputs/flutter-apk/sipo-dev-${GITHUB_SHA::7}.apk
