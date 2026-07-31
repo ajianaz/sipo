@@ -29,10 +29,7 @@ void main() {
   group('SatuanDao', () {
     test('insert and getAll returns inserted satuan', () async {
       await dao.insert(
-        SatuansCompanion(
-          nama: const Value('kg'),
-          isActive: const Value(1),
-        ),
+        SatuansCompanion(nama: const Value('kg'), isActive: const Value(1)),
       );
 
       final list = await dao.getAll();
@@ -42,16 +39,10 @@ void main() {
 
     test('getAllActive filters out inactive', () async {
       await dao.insert(
-        SatuansCompanion(
-          nama: const Value('kg'),
-          isActive: const Value(1),
-        ),
+        SatuansCompanion(nama: const Value('kg'), isActive: const Value(1)),
       );
       await dao.insert(
-        SatuansCompanion(
-          nama: const Value('liter'),
-          isActive: const Value(0),
-        ),
+        SatuansCompanion(nama: const Value('liter'), isActive: const Value(0)),
       );
 
       final active = await dao.getAllActive();
@@ -61,10 +52,7 @@ void main() {
 
     test('getById returns correct satuan', () async {
       final id = await dao.insert(
-        SatuansCompanion(
-          nama: const Value('pcs'),
-          isActive: const Value(1),
-        ),
+        SatuansCompanion(nama: const Value('pcs'), isActive: const Value(1)),
       );
 
       final satuan = await dao.getById(id);
@@ -79,10 +67,7 @@ void main() {
         ),
       );
       await dao.insert(
-        SatuansCompanion(
-          nama: const Value('liter'),
-          isActive: const Value(1),
-        ),
+        SatuansCompanion(nama: const Value('liter'), isActive: const Value(1)),
       );
 
       final results = await dao.search('kilo');
@@ -92,10 +77,7 @@ void main() {
 
     test('toggleActive toggles value', () async {
       final id = await dao.insert(
-        SatuansCompanion(
-          nama: const Value('kg'),
-          isActive: const Value(1),
-        ),
+        SatuansCompanion(nama: const Value('kg'), isActive: const Value(1)),
       );
 
       await dao.toggleActive(id);
@@ -109,10 +91,7 @@ void main() {
 
     test('deleteById removes satuan', () async {
       final id = await dao.insert(
-        SatuansCompanion(
-          nama: const Value('kg'),
-          isActive: const Value(1),
-        ),
+        SatuansCompanion(nama: const Value('kg'), isActive: const Value(1)),
       );
 
       await dao.deleteById(id);

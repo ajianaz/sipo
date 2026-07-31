@@ -48,18 +48,20 @@ class TransaksiDao extends DatabaseAccessor<AppDatabase>
   /// Get all transactions with details
   Future<List<TransaksiWithDetails>> getAllWithDetails() {
     final query = select(transaksis).join([
-      innerJoin(transaksiDetails,
-          transaksiDetails.transaksiId.equalsExp(transaksis.id)),
+      innerJoin(
+        transaksiDetails,
+        transaksiDetails.transaksiId.equalsExp(transaksis.id),
+      ),
     ]);
 
-    return query.map((row) {
-      final transaksi = row.readTable(transaksis);
-      final detail = row.readTable(transaksiDetails);
-      return TransaksiRow(
-        transaksi: transaksi,
-        detail: detail,
-      );
-    }).get().then(_groupDetails);
+    return query
+        .map((row) {
+          final transaksi = row.readTable(transaksis);
+          final detail = row.readTable(transaksiDetails);
+          return TransaksiRow(transaksi: transaksi, detail: detail);
+        })
+        .get()
+        .then(_groupDetails);
   }
 
   /// Get transactions filtered by type and date range
@@ -69,34 +71,43 @@ class TransaksiDao extends DatabaseAccessor<AppDatabase>
     required String endDate,
   }) {
     final query = select(transaksis).join([
-      innerJoin(transaksiDetails,
-          transaksiDetails.transaksiId.equalsExp(transaksis.id)),
+      innerJoin(
+        transaksiDetails,
+        transaksiDetails.transaksiId.equalsExp(transaksis.id),
+      ),
     ]);
 
-    query
-      .where(transaksis.tipe.equals(tipe) &
+    query.where(
+      transaksis.tipe.equals(tipe) &
           transaksis.tanggal.isBiggerOrEqualValue(startDate) &
-          transaksis.tanggal.isSmallerOrEqualValue(endDate));
+          transaksis.tanggal.isSmallerOrEqualValue(endDate),
+    );
 
-    return query.map((row) {
-      final transaksi = row.readTable(transaksis);
-      final detail = row.readTable(transaksiDetails);
-      return TransaksiRow(transaksi: transaksi, detail: detail);
-    }).get().then(_groupDetails);
+    return query
+        .map((row) {
+          final transaksi = row.readTable(transaksis);
+          final detail = row.readTable(transaksiDetails);
+          return TransaksiRow(transaksi: transaksi, detail: detail);
+        })
+        .get()
+        .then(_groupDetails);
   }
 
   /// Get a single transaction with all its details
   Future<TransaksiWithDetails?> getWithDetailsById(int id) async {
     final query = select(transaksis).join([
-      innerJoin(transaksiDetails,
-          transaksiDetails.transaksiId.equalsExp(transaksis.id)),
+      innerJoin(
+        transaksiDetails,
+        transaksiDetails.transaksiId.equalsExp(transaksis.id),
+      ),
     ])..where(transaksis.id.equals(id));
 
-    final rows = await query.map((row) {
-      final transaksi = row.readTable(transaksis);
-      final detail = row.readTable(transaksiDetails);
-      return TransaksiRow(transaksi: transaksi, detail: detail);
-    }).get();
+    final rows =
+        await query.map((row) {
+          final transaksi = row.readTable(transaksis);
+          final detail = row.readTable(transaksiDetails);
+          return TransaksiRow(transaksi: transaksi, detail: detail);
+        }).get();
 
     final grouped = _groupDetails(rows);
     return grouped.isEmpty ? null : grouped.first;
@@ -114,22 +125,20 @@ class TransaksiDao extends DatabaseAccessor<AppDatabase>
       );
     }
 
-    final pembelianQuery = select(transaksis)
-      ..where((t) => t.tipe.equals('pembelian') &
-          t.tanggal.like('$todayDate%'));
+    final pembelianQuery = select(
+      transaksis,
+    )..where((t) => t.tipe.equals('pembelian') & t.tanggal.like('$todayDate%'));
 
-    final penjualanQuery = select(transaksis)
-      ..where((t) => t.tipe.equals('penjualan') &
-          t.tanggal.like('$todayDate%'));
+    final penjualanQuery = select(
+      transaksis,
+    )..where((t) => t.tipe.equals('penjualan') & t.tanggal.like('$todayDate%'));
 
     final pembelianList = await pembelianQuery.get();
     final penjualanList = await penjualanQuery.get();
 
     return TodaySummary(
-      totalPembelian: pembelianList.fold(
-          0.0, (sum, t) => sum + t.totalHarga),
-      totalPenjualan: penjualanList.fold(
-          0.0, (sum, t) => sum + t.totalHarga),
+      totalPembelian: pembelianList.fold(0.0, (sum, t) => sum + t.totalHarga),
+      totalPenjualan: penjualanList.fold(0.0, (sum, t) => sum + t.totalHarga),
       countPembelian: pembelianList.length,
       countPenjualan: penjualanList.length,
     );

@@ -16,8 +16,9 @@ final routerProvider = Provider<GoRouter>((ref) {
     initialLocation: '/',
     routes: [
       StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) =>
-            SipoShell(navigationShell: navigationShell),
+        builder:
+            (context, state, navigationShell) =>
+                SipoShell(navigationShell: navigationShell),
         branches: [
           // Branch 0: Beranda
           StatefulShellBranch(
@@ -74,10 +75,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
       // Master data pages (accessible from settings or direct link)
-      GoRoute(
-        path: '/satuan',
-        builder: (context, state) => const SatuanPage(),
-      ),
+      GoRoute(path: '/satuan', builder: (context, state) => const SatuanPage()),
       GoRoute(
         path: '/transaksi',
         builder: (context, state) => const TransaksiPage(),

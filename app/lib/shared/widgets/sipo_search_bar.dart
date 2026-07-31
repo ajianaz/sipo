@@ -21,15 +21,16 @@ class SipoSearchBar extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         prefixIcon: const Icon(Icons.search, color: SipoColors.muted),
-        suffixIcon: controller.text.isNotEmpty
-            ? IconButton(
-                icon: const Icon(Icons.clear, color: SipoColors.muted),
-                onPressed: () {
-                  controller.clear();
-                  onChanged('');
-                },
-              )
-            : null,
+        suffixIcon:
+            controller.text.isNotEmpty
+                ? IconButton(
+                  icon: const Icon(Icons.clear, color: SipoColors.muted),
+                  onPressed: () {
+                    controller.clear();
+                    onChanged('');
+                  },
+                )
+                : null,
         isDense: true,
       ),
     );

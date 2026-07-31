@@ -18,8 +18,9 @@ class AnalitikDao extends DatabaseAccessor<AppDatabase>
     int? barangId,
   }) async {
     // Custom SQL for aggregation — much cleaner than Drift DSL for GROUP BY
-    final results = await customSelect(
-      '''
+    final results =
+        await customSelect(
+          '''
         SELECT
           b.id AS barang_id,
           b.nama AS barang_nama,
@@ -36,22 +37,26 @@ class AnalitikDao extends DatabaseAccessor<AppDatabase>
         GROUP BY b.id, b.nama, b.satuan_id
         ORDER BY b.nama ASC
       ''',
-      variables: [
-        Variable<String>(startDate),
-        Variable<String>(endDate),
-        if (barangId != null) Variable<int>(barangId),
-      ],
-    ).get();
+          variables: [
+            Variable<String>(startDate),
+            Variable<String>(endDate),
+            if (barangId != null) Variable<int>(barangId),
+          ],
+        ).get();
 
-    return results.map((row) => AnalitikSummary(
-          barangId: row.read<int>('barang_id'),
-          barangNama: row.read<String>('barang_nama'),
-          satuanId: row.read<int>('satuan_id'),
-          totalQtyPembelian: row.read<double>('total_qty_pembelian'),
-          totalNilaiPembelian: row.read<double>('total_nilai_pembelian'),
-          totalQtyPenjualan: row.read<double>('total_qty_penjualan'),
-          totalNilaiPenjualan: row.read<double>('total_nilai_penjualan'),
-        )).toList();
+    return results
+        .map(
+          (row) => AnalitikSummary(
+            barangId: row.read<int>('barang_id'),
+            barangNama: row.read<String>('barang_nama'),
+            satuanId: row.read<int>('satuan_id'),
+            totalQtyPembelian: row.read<double>('total_qty_pembelian'),
+            totalNilaiPembelian: row.read<double>('total_nilai_pembelian'),
+            totalQtyPenjualan: row.read<double>('total_qty_penjualan'),
+            totalNilaiPenjualan: row.read<double>('total_nilai_penjualan'),
+          ),
+        )
+        .toList();
   }
 
   /// Total summary across all barang for a date range
@@ -59,8 +64,9 @@ class AnalitikDao extends DatabaseAccessor<AppDatabase>
     required String startDate,
     required String endDate,
   }) async {
-    final result = await customSelect(
-      '''
+    final result =
+        await customSelect(
+          '''
         SELECT
           COALESCE(SUM(CASE WHEN t.tipe = 'pembelian' THEN td.jumlah ELSE 0 END), 0) AS total_qty_pembelian,
           COALESCE(SUM(CASE WHEN t.tipe = 'pembelian' THEN td.subtotal ELSE 0 END), 0) AS total_nilai_pembelian,
@@ -70,11 +76,8 @@ class AnalitikDao extends DatabaseAccessor<AppDatabase>
         INNER JOIN transaksis t ON t.id = td.transaksi_id
         WHERE t.tanggal >= ? AND t.tanggal <= ?
       ''',
-      variables: [
-        Variable<String>(startDate),
-        Variable<String>(endDate),
-      ],
-    ).getSingleOrNull();
+          variables: [Variable<String>(startDate), Variable<String>(endDate)],
+        ).getSingleOrNull();
 
     if (result == null) {
       return AnalitikTotal(

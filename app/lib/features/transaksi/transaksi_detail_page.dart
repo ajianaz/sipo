@@ -15,9 +15,7 @@ class TransaksiDetailPage extends ConsumerWidget {
     final detailAsync = ref.watch(_detailProvider(transaksiId));
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Detail Transaksi'),
-      ),
+      appBar: AppBar(title: const Text('Detail Transaksi')),
       body: detailAsync.when(
         data: (detail) {
           if (detail == null) {
@@ -40,9 +38,10 @@ class TransaksiDetailPage extends ConsumerWidget {
                             isPembelian
                                 ? Icons.shopping_cart
                                 : Icons.point_of_sale,
-                            color: isPembelian
-                                ? SipoColors.warning
-                                : SipoColors.success,
+                            color:
+                                isPembelian
+                                    ? SipoColors.warning
+                                    : SipoColors.success,
                           ),
                           const SizedBox(width: 8),
                           Text(
@@ -50,9 +49,10 @@ class TransaksiDetailPage extends ConsumerWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 18,
-                              color: isPembelian
-                                  ? SipoColors.warning
-                                  : SipoColors.success,
+                              color:
+                                  isPembelian
+                                      ? SipoColors.warning
+                                      : SipoColors.success,
                             ),
                           ),
                         ],
@@ -60,9 +60,9 @@ class TransaksiDetailPage extends ConsumerWidget {
                       const SizedBox(height: 12),
                       Text(
                         DateFormatter.dateTimeFromString(
-                            detail.transaksi.tanggal),
-                        style: TextStyle(
-                            color: SipoColors.muted, fontSize: 13),
+                          detail.transaksi.tanggal,
+                        ),
+                        style: TextStyle(color: SipoColors.muted, fontSize: 13),
                       ),
                     ],
                   ),
@@ -71,67 +71,85 @@ class TransaksiDetailPage extends ConsumerWidget {
               const SizedBox(height: 12),
 
               // Items
-              Text('Item',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      )),
+              Text(
+                'Item',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+              ),
               const SizedBox(height: 8),
-              ...detail.details.map((d) => Card(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('ID Barang: ${d.barangId}',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.w500)),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text('${d.jumlah} × ${CurrencyFormatter.format(d.hargaSatuan)}',
-                                  style: TextStyle(
-                                      fontSize: 12, color: SipoColors.muted)),
-                              Text(
-                                CurrencyFormatter.format(d.subtotal),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+              ...detail.details.map(
+                (d) => Card(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
                     ),
-                  )),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'ID Barang: ${d.barangId}',
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              '${d.jumlah} × ${CurrencyFormatter.format(d.hargaSatuan)}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: SipoColors.muted,
+                              ),
+                            ),
+                            Text(
+                              CurrencyFormatter.format(d.subtotal),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
 
               // Total
               const SizedBox(height: 12),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
-                  color: isPembelian
-                      ? SipoColors.warningContainer
-                      : SipoColors.successContainer,
+                  color:
+                      isPembelian
+                          ? SipoColors.warningContainer
+                          : SipoColors.successContainer,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Total',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16,
-                        )),
+                    const Text(
+                      'Total',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                      ),
+                    ),
                     Text(
                       CurrencyFormatter.format(detail.transaksi.totalHarga),
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 20,
-                        color: isPembelian
-                            ? SipoColors.warning
-                            : SipoColors.success,
+                        color:
+                            isPembelian
+                                ? SipoColors.warning
+                                : SipoColors.success,
                       ),
                     ),
                   ],
@@ -147,7 +165,9 @@ class TransaksiDetailPage extends ConsumerWidget {
   }
 }
 
-final _detailProvider =
-    FutureProvider.family<TransaksiWithDetails?, int>((ref, id) {
+final _detailProvider = FutureProvider.family<TransaksiWithDetails?, int>((
+  ref,
+  id,
+) {
   return ref.watch(transaksiDaoProvider).getWithDetailsById(id);
 });

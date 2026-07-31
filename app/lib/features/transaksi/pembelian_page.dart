@@ -51,21 +51,25 @@ class _PembelianPageState extends ConsumerState<PembelianPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Step 1: Select Customer
-            Text('Supplier',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    )),
+            Text(
+              'Supplier',
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+            ),
             const SizedBox(height: 8),
             customersAsync.when(
-              data: (list) => _CustomerSelector(
-                customers: list,
-                selected: _selectedCustomer,
-                onSelected: (c) => setState(() => _selectedCustomer = c),
-              ),
-              loading: () => const SizedBox(
-                height: 48,
-                child: Center(child: CircularProgressIndicator()),
-              ),
+              data:
+                  (list) => _CustomerSelector(
+                    customers: list,
+                    selected: _selectedCustomer,
+                    onSelected: (c) => setState(() => _selectedCustomer = c),
+                  ),
+              loading:
+                  () => const SizedBox(
+                    height: 48,
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
               error: (e, _) => Text('Error: $e'),
             ),
             const SizedBox(height: 24),
@@ -73,31 +77,37 @@ class _PembelianPageState extends ConsumerState<PembelianPage> {
             // Step 2: Add Items
             Row(
               children: [
-                Text('Tambah Barang',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        )),
+                Text(
+                  'Tambah Barang',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+                ),
               ],
             ),
             const SizedBox(height: 8),
             barangsAsync.when(
-              data: (list) => _BarangSelector(
-                barangs: list,
-                cart: _cart,
-                onAdd: (barang) {
-                  setState(() {
-                    _cart.add(_CartItem(
-                      barang: barang,
-                      jumlah: 1,
-                      hargaSatuan: barang.hargaBeli,
-                    ));
-                  });
-                },
-              ),
-              loading: () => const SizedBox(
-                height: 48,
-                child: Center(child: CircularProgressIndicator()),
-              ),
+              data:
+                  (list) => _BarangSelector(
+                    barangs: list,
+                    cart: _cart,
+                    onAdd: (barang) {
+                      setState(() {
+                        _cart.add(
+                          _CartItem(
+                            barang: barang,
+                            jumlah: 1,
+                            hargaSatuan: barang.hargaBeli,
+                          ),
+                        );
+                      });
+                    },
+                  ),
+              loading:
+                  () => const SizedBox(
+                    height: 48,
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
               error: (e, _) => Text('Error: $e'),
             ),
             const SizedBox(height: 16),
@@ -106,10 +116,12 @@ class _PembelianPageState extends ConsumerState<PembelianPage> {
             if (_cart.isNotEmpty) ...[
               const Divider(),
               const SizedBox(height: 8),
-              Text('Keranjang',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      )),
+              Text(
+                'Keranjang',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+              ),
               const SizedBox(height: 8),
               ..._cart.asMap().entries.map((entry) {
                 final i = entry.key;
@@ -124,13 +136,18 @@ class _PembelianPageState extends ConsumerState<PembelianPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(item.barang.nama,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w500)),
+                              Text(
+                                item.barang.nama,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                               Text(
                                 'Rp ${item.hargaSatuan.toStringAsFixed(2)} / item',
                                 style: TextStyle(
-                                    fontSize: 12, color: SipoColors.muted),
+                                  fontSize: 12,
+                                  color: SipoColors.muted,
+                                ),
                               ),
                               const SizedBox(height: 8),
                               QuantityStepper(
@@ -153,8 +170,11 @@ class _PembelianPageState extends ConsumerState<PembelianPage> {
                               ),
                             ),
                             IconButton(
-                              icon: Icon(Icons.close,
-                                  size: 18, color: SipoColors.danger),
+                              icon: Icon(
+                                Icons.close,
+                                size: 18,
+                                color: SipoColors.danger,
+                              ),
                               onPressed: () {
                                 setState(() => _cart.removeAt(i));
                               },
@@ -169,8 +189,10 @@ class _PembelianPageState extends ConsumerState<PembelianPage> {
               const SizedBox(height: 12),
               // Total
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
                   color: SipoColors.primaryContainer,
                   borderRadius: BorderRadius.circular(12),
@@ -178,8 +200,10 @@ class _PembelianPageState extends ConsumerState<PembelianPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Total',
-                        style: TextStyle(fontWeight: FontWeight.w600)),
+                    const Text(
+                      'Total',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
                     Text(
                       CurrencyFormatter.format(_total),
                       style: const TextStyle(
@@ -196,13 +220,17 @@ class _PembelianPageState extends ConsumerState<PembelianPage> {
                 width: double.infinity,
                 child: FilledButton.icon(
                   onPressed: _isSaving ? null : _showReviewSheet,
-                  icon: _isSaving
-                      ? const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(
-                              strokeWidth: 2, color: Colors.white))
-                      : const Icon(Icons.save),
+                  icon:
+                      _isSaving
+                          ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                          : const Icon(Icons.save),
                   label: const Text('Simpan Pembelian'),
                 ),
               ),
@@ -213,65 +241,69 @@ class _PembelianPageState extends ConsumerState<PembelianPage> {
     );
   }
 
-  double get _total =>
-      _cart.fold(0.0, (sum, item) => sum + item.subtotal);
+  double get _total => _cart.fold(0.0, (sum, item) => sum + item.subtotal);
 
   void _showReviewSheet() {
     if (_selectedCustomer == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Pilih supplier dulu')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Pilih supplier dulu')));
       return;
     }
     if (_cart.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Tambahkan barang dulu')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Tambahkan barang dulu')));
       return;
     }
 
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (ctx) => SipoConfirmSheet(
-        title: 'Konfirmasi Pembelian',
-        subtitle: 'Supplier: ${_selectedCustomer!.nama}',
-        children: [
-          ..._cart.map((item) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text('${item.barang.nama} × ${item.jumlah}'),
-                    ),
-                    Text(CurrencyFormatter.format(item.subtotal)),
-                  ],
-                ),
-              )),
-          const Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      builder:
+          (ctx) => SipoConfirmSheet(
+            title: 'Konfirmasi Pembelian',
+            subtitle: 'Supplier: ${_selectedCustomer!.nama}',
             children: [
-              const Text('Total',
-                  style: TextStyle(fontWeight: FontWeight.w700)),
-              Text(
-                CurrencyFormatter.format(_total),
-                style: const TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 18,
-                  color: SipoColors.primary,
+              ..._cart.map(
+                (item) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text('${item.barang.nama} × ${item.jumlah}'),
+                      ),
+                      Text(CurrencyFormatter.format(item.subtotal)),
+                    ],
+                  ),
                 ),
               ),
+              const Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Total',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  Text(
+                    CurrencyFormatter.format(_total),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18,
+                      color: SipoColors.primary,
+                    ),
+                  ),
+                ],
+              ),
             ],
+            onConfirm: () async {
+              Navigator.pop(ctx);
+              await _save();
+            },
+            onCancel: () => Navigator.pop(ctx),
           ),
-        ],
-        onConfirm: () async {
-          Navigator.pop(ctx);
-          await _save();
-        },
-        onCancel: () => Navigator.pop(ctx),
-      ),
     );
   }
 
@@ -282,14 +314,17 @@ class _PembelianPageState extends ConsumerState<PembelianPage> {
       await repo.createPembelian(
         customerId: _selectedCustomer!.id,
         totalHarga: _total,
-        items: _cart
-            .map((c) => TransaksiDetailItem(
-                  barangId: c.barang.id,
-                  jumlah: c.jumlah,
-                  hargaSatuan: c.hargaSatuan,
-                  subtotal: c.subtotal,
-                ))
-            .toList(),
+        items:
+            _cart
+                .map(
+                  (c) => TransaksiDetailItem(
+                    barangId: c.barang.id,
+                    jumlah: c.jumlah,
+                    hargaSatuan: c.hargaSatuan,
+                    subtotal: c.subtotal,
+                  ),
+                )
+                .toList(),
       );
 
       if (mounted) {
@@ -307,9 +342,9 @@ class _PembelianPageState extends ConsumerState<PembelianPage> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal menyimpan: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Gagal menyimpan: $e')));
       }
     } finally {
       setState(() => _isSaving = false);
@@ -365,14 +400,15 @@ class _CustomerSelector extends StatelessWidget {
     return Wrap(
       spacing: 8,
       runSpacing: 8,
-      children: customers.map((c) {
-        final isSelected = selected?.id == c.id;
-        return ChoiceChip(
-          label: Text(c.nama),
-          selected: isSelected,
-          onSelected: (_) => onSelected(c),
-        );
-      }).toList(),
+      children:
+          customers.map((c) {
+            final isSelected = selected?.id == c.id;
+            return ChoiceChip(
+              label: Text(c.nama),
+              selected: isSelected,
+              onSelected: (_) => onSelected(c),
+            );
+          }).toList(),
     );
   }
 }
@@ -397,11 +433,14 @@ class _BarangSelectorState extends State<_BarangSelector> {
 
   @override
   Widget build(BuildContext context) {
-    final filtered = _query.isEmpty
-        ? widget.barangs
-        : widget.barangs
-            .where((b) => b.nama.toLowerCase().contains(_query.toLowerCase()))
-            .toList();
+    final filtered =
+        _query.isEmpty
+            ? widget.barangs
+            : widget.barangs
+                .where(
+                  (b) => b.nama.toLowerCase().contains(_query.toLowerCase()),
+                )
+                .toList();
 
     return Column(
       children: [
@@ -417,28 +456,30 @@ class _BarangSelectorState extends State<_BarangSelector> {
         if (filtered.isEmpty)
           Padding(
             padding: const EdgeInsets.all(8),
-            child: Text('Tidak ditemukan',
-                style: TextStyle(color: SipoColors.muted)),
+            child: Text(
+              'Tidak ditemukan',
+              style: TextStyle(color: SipoColors.muted),
+            ),
           ),
         Wrap(
           spacing: 8,
           runSpacing: 8,
-          children: filtered.map((b) {
-            final inCart =
-                widget.cart.any((c) => c.barang.id == b.id);
-            return ActionChip(
-              avatar: Icon(
-                inCart ? Icons.check_circle : Icons.add_circle_outline,
-                size: 18,
-                color: inCart ? SipoColors.success : SipoColors.muted,
-              ),
-              label: Text(
-                '${b.nama} (${CurrencyFormatter.format(b.hargaBeli)})',
-                style: const TextStyle(fontSize: 12),
-              ),
-              onPressed: inCart ? null : () => widget.onAdd(b),
-            );
-          }).toList(),
+          children:
+              filtered.map((b) {
+                final inCart = widget.cart.any((c) => c.barang.id == b.id);
+                return ActionChip(
+                  avatar: Icon(
+                    inCart ? Icons.check_circle : Icons.add_circle_outline,
+                    size: 18,
+                    color: inCart ? SipoColors.success : SipoColors.muted,
+                  ),
+                  label: Text(
+                    '${b.nama} (${CurrencyFormatter.format(b.hargaBeli)})',
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                  onPressed: inCart ? null : () => widget.onAdd(b),
+                );
+              }).toList(),
         ),
       ],
     );

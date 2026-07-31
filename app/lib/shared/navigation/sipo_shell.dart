@@ -66,53 +66,58 @@ class _SipoShellState extends State<SipoShell> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (ctx) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.outline,
-                  borderRadius: BorderRadius.circular(2),
-                ),
+      builder:
+          (ctx) => SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.outline,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor:
+                          Theme.of(context).colorScheme.tertiaryContainer,
+                      child: Icon(
+                        Icons.shopping_cart,
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
+                    ),
+                    title: const Text('Pembelian'),
+                    subtitle: const Text('Catat pembelian dari supplier'),
+                    onTap: () {
+                      Navigator.pop(ctx);
+                      context.push('/pembelian');
+                    },
+                  ),
+                  ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor:
+                          Theme.of(context).colorScheme.primaryContainer,
+                      child: Icon(
+                        Icons.point_of_sale,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    title: const Text('Penjualan'),
+                    subtitle: const Text('Catat penjualan ke pelanggan'),
+                    onTap: () {
+                      Navigator.pop(ctx);
+                      context.push('/penjualan');
+                    },
+                  ),
+                ],
               ),
-              const SizedBox(height: 20),
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundColor:
-                      Theme.of(context).colorScheme.tertiaryContainer,
-                  child: Icon(Icons.shopping_cart,
-                      color: Theme.of(context).colorScheme.tertiary),
-                ),
-                title: const Text('Pembelian'),
-                subtitle: const Text('Catat pembelian dari supplier'),
-                onTap: () {
-                  Navigator.pop(ctx);
-                  context.push('/pembelian');
-                },
-              ),
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundColor:
-                      Theme.of(context).colorScheme.primaryContainer,
-                  child: Icon(Icons.point_of_sale,
-                      color: Theme.of(context).colorScheme.primary),
-                ),
-                title: const Text('Penjualan'),
-                subtitle: const Text('Catat penjualan ke pelanggan'),
-                onTap: () {
-                  Navigator.pop(ctx);
-                  context.push('/penjualan');
-                },
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
     );
   }
 }
@@ -148,9 +153,10 @@ class _NavIcon extends StatelessWidget {
           children: [
             Icon(
               isActive ? activeIcon : icon,
-              color: isActive
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.onSurfaceVariant,
+              color:
+                  isActive
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context).colorScheme.onSurfaceVariant,
               size: 24,
             ),
             const SizedBox(height: 2),
@@ -159,9 +165,10 @@ class _NavIcon extends StatelessWidget {
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
-                color: isActive
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.onSurfaceVariant,
+                color:
+                    isActive
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ],

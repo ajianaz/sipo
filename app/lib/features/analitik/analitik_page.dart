@@ -49,19 +49,22 @@ class _AnalitikPageState extends ConsumerState<AnalitikPage> {
           Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
-              children: _filterLabels.asMap().entries.map((entry) {
-                final i = entry.key;
-                final label = entry.value;
-                return Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: ChoiceChip(
-                    label: Text(label, style: const TextStyle(fontSize: 12)),
-                    selected: _selectedFilter == i,
-                    onSelected: (_) =>
-                        setState(() => _selectedFilter = i),
-                  ),
-                );
-              }).toList(),
+              children:
+                  _filterLabels.asMap().entries.map((entry) {
+                    final i = entry.key;
+                    final label = entry.value;
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: ChoiceChip(
+                        label: Text(
+                          label,
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                        selected: _selectedFilter == i,
+                        onSelected: (_) => setState(() => _selectedFilter = i),
+                      ),
+                    );
+                  }).toList(),
             ),
           ),
 
@@ -74,10 +77,16 @@ class _AnalitikPageState extends ConsumerState<AnalitikPage> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.bar_chart, size: 64, color: SipoColors.muted),
+                        Icon(
+                          Icons.bar_chart,
+                          size: 64,
+                          color: SipoColors.muted,
+                        ),
                         SizedBox(height: 16),
-                        Text('Belum ada data transaksi',
-                            style: TextStyle(color: SipoColors.muted)),
+                        Text(
+                          'Belum ada data transaksi',
+                          style: TextStyle(color: SipoColors.muted),
+                        ),
                       ],
                     ),
                   );
@@ -100,8 +109,7 @@ class _AnalitikPageState extends ConsumerState<AnalitikPage> {
                   ),
                 );
               },
-              loading: () =>
-                  const Center(child: CircularProgressIndicator()),
+              loading: () => const Center(child: CircularProgressIndicator()),
               error: (e, _) => Center(child: Text('Error: $e')),
             ),
           ),
@@ -112,14 +120,14 @@ class _AnalitikPageState extends ConsumerState<AnalitikPage> {
 }
 
 final _summaryProvider =
-    FutureProvider.family<List<AnalitikSummary>, (String, String)>(
-  (ref, range) {
-    return ref.watch(analitikDaoProvider).getSummaryByBarang(
-          startDate: range.$1,
-          endDate: range.$2,
-        );
-  },
-);
+    FutureProvider.family<List<AnalitikSummary>, (String, String)>((
+      ref,
+      range,
+    ) {
+      return ref
+          .watch(analitikDaoProvider)
+          .getSummaryByBarang(startDate: range.$1, endDate: range.$2);
+    });
 
 class _AnalitikHeader extends StatelessWidget {
   const _AnalitikHeader();
@@ -136,33 +144,51 @@ class _AnalitikHeader extends StatelessWidget {
       child: const Row(
         children: [
           Expanded(
-              child: Text('Barang',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13))),
+            child: Text(
+              'Barang',
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+            ),
+          ),
           SizedBox(
-              width: 60,
-              child: Text('Beli (qty)',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12))),
+            width: 60,
+            child: Text(
+              'Beli (qty)',
+              textAlign: TextAlign.right,
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+            ),
+          ),
           SizedBox(
-              width: 70,
-              child: Text('Beli (Rp)',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12))),
+            width: 70,
+            child: Text(
+              'Beli (Rp)',
+              textAlign: TextAlign.right,
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+            ),
+          ),
           SizedBox(
-              width: 60,
-              child: Text('Jual (qty)',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12))),
+            width: 60,
+            child: Text(
+              'Jual (qty)',
+              textAlign: TextAlign.right,
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+            ),
+          ),
           SizedBox(
-              width: 70,
-              child: Text('Jual (Rp)',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12))),
+            width: 70,
+            child: Text(
+              'Jual (Rp)',
+              textAlign: TextAlign.right,
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+            ),
+          ),
           SizedBox(
-              width: 60,
-              child: Text('Netto',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12))),
+            width: 60,
+            child: Text(
+              'Netto',
+              textAlign: TextAlign.right,
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+            ),
+          ),
         ],
       ),
     );
@@ -185,7 +211,9 @@ class _AnalitikRow extends StatelessWidget {
               child: Text(
                 summary.barangNama,
                 style: const TextStyle(
-                    fontWeight: FontWeight.w500, fontSize: 13),
+                  fontWeight: FontWeight.w500,
+                  fontSize: 13,
+                ),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -229,9 +257,10 @@ class _AnalitikRow extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: summary.nettoQty >= 0
-                      ? SipoColors.success
-                      : SipoColors.danger,
+                  color:
+                      summary.nettoQty >= 0
+                          ? SipoColors.success
+                          : SipoColors.danger,
                 ),
               ),
             ),

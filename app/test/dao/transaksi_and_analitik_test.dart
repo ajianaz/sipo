@@ -35,8 +35,8 @@ void main() {
   });
 
   Future<int> seedSatuan(String nama) => satuanDao.insert(
-        SatuansCompanion(nama: Value(nama), isActive: const Value(1)),
-      );
+    SatuansCompanion(nama: Value(nama), isActive: const Value(1)),
+  );
 
   Future<int> seedBarang(String nama, int satuanId, double beli, double jual) =>
       barangDao.insert(
@@ -48,9 +48,8 @@ void main() {
         ),
       );
 
-  Future<int> seedCustomer(String nama) => customerDao.insert(
-        CustomersCompanion(nama: Value(nama)),
-      );
+  Future<int> seedCustomer(String nama) =>
+      customerDao.insert(CustomersCompanion(nama: Value(nama)));
 
   group('TransaksiDao', () {
     test('insertTransaction creates header and details', () async {
@@ -116,7 +115,12 @@ void main() {
         tanggal: '2026-07-31T10:00:00',
         totalHarga: 10000,
         items: [
-          TransaksiDetailItem(barangId: barangId, jumlah: 1, hargaSatuan: 10000, subtotal: 10000),
+          TransaksiDetailItem(
+            barangId: barangId,
+            jumlah: 1,
+            hargaSatuan: 10000,
+            subtotal: 10000,
+          ),
         ],
       );
 
@@ -137,7 +141,12 @@ void main() {
         customerId: custId,
         totalHarga: 20000,
         items: [
-          TransaksiDetailItem(barangId: barangId, jumlah: 2, hargaSatuan: 10000, subtotal: 20000),
+          TransaksiDetailItem(
+            barangId: barangId,
+            jumlah: 2,
+            hargaSatuan: 10000,
+            subtotal: 20000,
+          ),
         ],
       );
 
@@ -155,7 +164,12 @@ void main() {
         customerId: null,
         totalHarga: 8000,
         items: [
-          TransaksiDetailItem(barangId: barangId, jumlah: 1, hargaSatuan: 8000, subtotal: 8000),
+          TransaksiDetailItem(
+            barangId: barangId,
+            jumlah: 1,
+            hargaSatuan: 8000,
+            subtotal: 8000,
+          ),
         ],
       );
 
@@ -177,7 +191,12 @@ void main() {
         tanggal: '2026-07-31',
         totalHarga: 50000,
         items: [
-          TransaksiDetailItem(barangId: barangId, jumlah: 5, hargaSatuan: 10000, subtotal: 50000),
+          TransaksiDetailItem(
+            barangId: barangId,
+            jumlah: 5,
+            hargaSatuan: 10000,
+            subtotal: 50000,
+          ),
         ],
       );
 
@@ -188,7 +207,12 @@ void main() {
         tanggal: '2026-07-31',
         totalHarga: 36000,
         items: [
-          TransaksiDetailItem(barangId: barangId, jumlah: 3, hargaSatuan: 12000, subtotal: 36000),
+          TransaksiDetailItem(
+            barangId: barangId,
+            jumlah: 3,
+            hargaSatuan: 12000,
+            subtotal: 36000,
+          ),
         ],
       );
 
@@ -225,7 +249,12 @@ void main() {
         tanggal: '2026-07-15',
         totalHarga: 10000,
         items: [
-          TransaksiDetailItem(barangId: barangId, jumlah: 1, hargaSatuan: 10000, subtotal: 10000),
+          TransaksiDetailItem(
+            barangId: barangId,
+            jumlah: 1,
+            hargaSatuan: 10000,
+            subtotal: 10000,
+          ),
         ],
       );
 

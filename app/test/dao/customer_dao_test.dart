@@ -38,9 +38,7 @@ void main() {
 
     test('getRecent returns latest entries', () async {
       for (int i = 1; i <= 5; i++) {
-        await dao.insert(
-          CustomersCompanion(nama: Value('Customer $i')),
-        );
+        await dao.insert(CustomersCompanion(nama: Value('Customer $i')));
       }
 
       final recent = await dao.getRecent(limit: 3);
@@ -50,12 +48,8 @@ void main() {
     });
 
     test('search finds by name', () async {
-      await dao.insert(
-        CustomersCompanion(nama: const Value('Toko Makmur')),
-      );
-      await dao.insert(
-        CustomersCompanion(nama: const Value('Toko Jaya')),
-      );
+      await dao.insert(CustomersCompanion(nama: const Value('Toko Makmur')));
+      await dao.insert(CustomersCompanion(nama: const Value('Toko Jaya')));
 
       final results = await dao.search('Makmur');
       expect(results.length, equals(1));

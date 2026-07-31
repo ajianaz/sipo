@@ -10,8 +10,7 @@ class BerandaPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todaySummaryAsync =
-        ref.watch(_todaySummaryProvider);
+    final todaySummaryAsync = ref.watch(_todaySummaryProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -27,28 +26,29 @@ class BerandaPage extends ConsumerWidget {
               Text(
                 'Sipo',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: SipoColors.primary,
-                    ),
+                  fontWeight: FontWeight.w700,
+                  color: SipoColors.primary,
+                ),
               ),
               const SizedBox(height: 4),
               Text(
                 'Catat pembelian & penjualan',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: SipoColors.muted,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: SipoColors.muted),
               ),
               const SizedBox(height: 24),
 
               // Today Summary Cards
               todaySummaryAsync.when(
                 data: (summary) => _SummaryCards(summary: summary),
-                loading: () => const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(32),
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
+                loading:
+                    () => const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(32),
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
                 error: (e, _) => Text('Error: $e'),
               ),
             ],
@@ -76,9 +76,9 @@ class _SummaryCards extends StatelessWidget {
       children: [
         Text(
           'Ringkasan Hari Ini',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 12),
         Row(
@@ -154,17 +154,14 @@ class _SummaryCard extends StatelessWidget {
             Text(
               value,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: SipoColors.onSurface,
-                  ),
+                fontWeight: FontWeight.w700,
+                color: SipoColors.onSurface,
+              ),
             ),
             const SizedBox(height: 4),
             Text(
               count,
-              style: TextStyle(
-                fontSize: 12,
-                color: SipoColors.muted,
-              ),
+              style: TextStyle(fontSize: 12, color: SipoColors.muted),
             ),
           ],
         ),

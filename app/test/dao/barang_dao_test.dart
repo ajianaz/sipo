@@ -26,8 +26,8 @@ void main() {
   });
 
   Future<int> seedSatuan(String nama) => satuanDao.insert(
-        SatuansCompanion(nama: Value(nama), isActive: const Value(1)),
-      );
+    SatuansCompanion(nama: Value(nama), isActive: const Value(1)),
+  );
 
   group('BarangDao', () {
     test('insert and getAll', () async {

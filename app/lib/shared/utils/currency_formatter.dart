@@ -12,9 +12,9 @@ class CurrencyFormatter {
 
   static String _formatInt(int value) {
     return value.toString().replaceAllMapped(
-          RegExp(r'\B(?=(\d{3})+(?!\d))'),
-          (m) => '.',
-        );
+      RegExp(r'\B(?=(\d{3})+(?!\d))'),
+      (m) => '.',
+    );
   }
 
   /// Parse Indonesian Rupiah format back to double.

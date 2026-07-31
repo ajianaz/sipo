@@ -15,10 +15,7 @@ class SatuanRepository {
 
   Future<List<Satuan>> search(String query) => _dao.search(query);
 
-  Future<int> create({
-    required String nama,
-    String? deskripsi,
-  }) {
+  Future<int> create({required String nama, String? deskripsi}) {
     return _dao.insert(
       SatuansCompanion(
         nama: Value(nama),

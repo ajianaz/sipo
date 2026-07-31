@@ -11,8 +11,7 @@ class BarangRepository {
 
   Future<Barang> getById(int id) => _dao.getById(id);
 
-  Future<List<BarangWithSatuan>> getAllWithSatuan() =>
-      _dao.getAllWithSatuan();
+  Future<List<BarangWithSatuan>> getAllWithSatuan() => _dao.getAllWithSatuan();
 
   Future<List<BarangWithSatuan>> searchWithSatuan(String query) =>
       _dao.searchWithSatuan(query);

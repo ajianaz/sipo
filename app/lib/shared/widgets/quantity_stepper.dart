@@ -59,7 +59,8 @@ class _QuantityStepperState extends State<QuantityStepper> {
       children: [
         _StepperButton(
           icon: Icons.remove,
-          onTap: _value > widget.min ? () => _update(_value - widget.step) : null,
+          onTap:
+              _value > widget.min ? () => _update(_value - widget.step) : null,
         ),
         SizedBox(
           width: 80,
@@ -77,7 +78,8 @@ class _QuantityStepperState extends State<QuantityStepper> {
         ),
         _StepperButton(
           icon: Icons.add,
-          onTap: _value < widget.max ? () => _update(_value + widget.step) : null,
+          onTap:
+              _value < widget.max ? () => _update(_value + widget.step) : null,
         ),
       ],
     );
@@ -96,9 +98,10 @@ class _StepperButton extends StatelessWidget {
       onPressed: onTap,
       icon: Icon(icon),
       style: IconButton.styleFrom(
-        backgroundColor: onTap != null
-            ? const Color(0xFFF1F5F9)
-            : const Color(0xFFF1F5F9).withValues(alpha: 0.5),
+        backgroundColor:
+            onTap != null
+                ? const Color(0xFFF1F5F9)
+                : const Color(0xFFF1F5F9).withValues(alpha: 0.5),
         minimumSize: const Size(40, 40),
         tapTargetSize: MaterialTapTargetSize.padded,
       ),

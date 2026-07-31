@@ -47,12 +47,11 @@ class TransaksiRepository {
     required String tipe,
     required String startDate,
     required String endDate,
-  }) =>
-      _dao.getByTypeAndDateRange(
-        tipe: tipe,
-        startDate: startDate,
-        endDate: endDate,
-      );
+  }) => _dao.getByTypeAndDateRange(
+    tipe: tipe,
+    startDate: startDate,
+    endDate: endDate,
+  );
 
   Future<TodaySummary> getTodaySummary() {
     final today = DateTime.now().toIso8601String().substring(0, 10);

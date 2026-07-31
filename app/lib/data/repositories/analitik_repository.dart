@@ -9,16 +9,14 @@ class AnalitikRepository {
     required String startDate,
     required String endDate,
     int? barangId,
-  }) =>
-      _dao.getSummaryByBarang(
-        startDate: startDate,
-        endDate: endDate,
-        barangId: barangId,
-      );
+  }) => _dao.getSummaryByBarang(
+    startDate: startDate,
+    endDate: endDate,
+    barangId: barangId,
+  );
 
   Future<AnalitikTotal> getTotal({
     required String startDate,
     required String endDate,
-  }) =>
-      _dao.getTotal(startDate: startDate, endDate: endDate);
+  }) => _dao.getTotal(startDate: startDate, endDate: endDate);
 }
