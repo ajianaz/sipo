@@ -1,0 +1,16 @@
+{
+  "timestamp": "2026-07-31T03:48:11.223959935Z",
+  "commit": "f2049cb",
+  "branch": "develop",
+  "files_reviewed": 0,
+  "lines_reviewed": null,
+  "findings": {
+    "critical": 1
+  },
+  "categories": {
+    "other": 1
+  },
+  "quality_score": 8.0,
+  "gate_status": "disabled",
+  "duration_ms": null
+}
