@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-07-31T03:17:47.767737264Z",
+  "commit": null,
+  "branch": null,
+  "files_reviewed": 0,
+  "lines_reviewed": null,
+  "findings": {
+    "critical": 1,
+    "major": 5
+  },
+  "categories": {
+    "other": 6
+  },
+  "quality_score": 3.0,
+  "gate_status": "disabled",
+  "duration_ms": null
+}
