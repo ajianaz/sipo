@@ -12,6 +12,8 @@ class AnalitikDao extends DatabaseAccessor<AppDatabase>
   /// Summary per barang within a date range
   /// Returns: barang_id, barang_nama, total_qty_pembelian, total_nilai_pembelian,
   ///          total_qty_penjualan, total_nilai_penjualan
+  /// startDate and endDate are date-only strings ("yyyy-MM-dd").
+  /// endDate is made inclusive by appending T23:59:59 to cover full-day timestamps.
   Future<List<AnalitikSummary>> getSummaryByBarang({
     required String startDate,
     required String endDate,
@@ -39,7 +41,7 @@ class AnalitikDao extends DatabaseAccessor<AppDatabase>
       ''',
           variables: [
             Variable<String>(startDate),
-            Variable<String>(endDate),
+            Variable<String>('${endDate}T23:59:59'),
             if (barangId != null) Variable<int>(barangId),
           ],
         ).get();
@@ -76,7 +78,10 @@ class AnalitikDao extends DatabaseAccessor<AppDatabase>
         INNER JOIN transaksis t ON t.id = td.transaksi_id
         WHERE t.tanggal >= ? AND t.tanggal <= ?
       ''',
-          variables: [Variable<String>(startDate), Variable<String>(endDate)],
+          variables: [
+            Variable<String>(startDate),
+            Variable<String>('${endDate}T23:59:59'),
+          ],
         ).getSingleOrNull();
 
     if (result == null) {

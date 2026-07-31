@@ -31,12 +31,11 @@ class SatuanRepository {
     String? deskripsi,
     required bool isActive,
   }) async {
-    final existing = await _dao.getById(id);
     return _dao.updateEntry(
       Satuan(
         id: id,
         nama: nama,
-        deskripsi: existing.deskripsi,
+        deskripsi: deskripsi ?? '',
         isActive: isActive ? 1 : 0,
       ),
     );
