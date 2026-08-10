@@ -134,6 +134,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
+          set -o pipefail
           npx wrangler@latest pages deploy app/build/web --project-name=sipo --commit-dirty=true 2>&1 | tee deploy-output.txt
           URL=$(grep -oP 'https://[a-f0-9]+\.\w+\.pages\.dev' deploy-output.txt | head -1)
           echo "deployment-url=$URL" >> "$GITHUB_OUTPUT"
