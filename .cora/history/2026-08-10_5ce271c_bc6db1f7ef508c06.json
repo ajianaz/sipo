@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-08-10T05:29:28.151406208Z",
+  "commit": "5ce271c",
+  "branch": "fix/web-platform-enable",
+  "files_reviewed": 0,
+  "lines_reviewed": null,
+  "findings": {},
+  "categories": {},
+  "quality_score": 10.0,
+  "gate_status": "disabled",
+  "duration_ms": null
+}
